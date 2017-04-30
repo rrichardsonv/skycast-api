@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  get 'searches/index'
 
-  get 'users/create'
-
+  resources :users, only: :create do
+    resources :searches, only: [:index, :create]
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
