@@ -10,14 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170430163708) do
+ActiveRecord::Schema.define(version: 20170501182952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "apikeys", force: :cascade do |t|
+    t.string   "accesskey"
+    t.string   "domain"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "searches", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "query"
+    t.string   "zipcode"
+    t.string   "lat"
+    t.string   "long"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -25,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170430163708) do
   create_table "users", force: :cascade do |t|
     t.string   "email",           null: false
     t.string   "password_digest", null: false
+    t.string   "token"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
