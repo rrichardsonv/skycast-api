@@ -1,2 +1,2 @@
 Dotenv.load
-DARKSKY = Darksky::API.new(ENV["DS_API_KEY"])
+Darksky_Client = Darksky::API.new(ENV["DS_API_KEY"])

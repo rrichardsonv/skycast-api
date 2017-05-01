@@ -7,9 +7,10 @@ RSpec.describe SearchesController, type: :controller do
 
     it "returns success for get request with a proper key and token" do
       test_env.run_all
-      get :index,
+      get :index, params: { 
         key: "#{test_env.key}",
         token: "#{test_env.token}"
+      }
       expect(response).to have_http_status(:success)
     end
 
@@ -23,9 +24,10 @@ RSpec.describe SearchesController, type: :controller do
       user = User.find(test_env.user_id)
       jsonResponse = { data: user.queries }.to_json
 
-      get :index,
+      get :index, params: {
         key: "#{test_env.key}",
-        token: "#{test_env.token}"
+        token: "#{test_env.token}"  
+      }
       expect(response.content_type).to eq("application/json")
 
       expect(JSON.parse(response.body).fetch("data")).to eq(JSON.parse(jsonResponse).fetch("data"))
@@ -44,38 +46,39 @@ RSpec.describe SearchesController, type: :controller do
     it "returns http created" do
       test_env.run_all
       user = User.last
-      post :create,
+      post :create, params: {
         key: "#{test_env.key}",
         token: "#{test_env.token}",
         :lat=>"#{search_data[:lat]}",
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
+            }  
       expect(response).to have_http_status(:created)
     end
 
     it "returns the response in json format" do
       test_env.run_all
       user = User.last
-      post :create,
+      post :create, params: {
         key: "#{test_env.key}",
         token: "#{test_env.token}",
         :lat=>"#{search_data[:lat]}",
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
-
+      }
       expect(response.content_type).to eq("application/json")
     end
 
     it "also returns the associated search data" do
       test_env.run_all
       user = User.last
-      post :create,
+      post :create, params: {
         key: "#{test_env.key}",
         token: "#{test_env.token}",
         :lat=>"#{search_data[:lat]}",
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
-
+      }
       latRe = Regexp.new("^#{search_data[:lat]}")
       longRe = Regexp.new("^#{search_data[:long]}")
       responseBody = JSON.parse(response.body).fetch("data")
@@ -86,28 +89,30 @@ RSpec.describe SearchesController, type: :controller do
 
     it "returns redirect without a token" do
       test_env.run_all
-      post :create,
+      post :create, params: {
         key: "#{test_env.key}",
         :lat=>"#{search_data[:lat]}",
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
+      }
       expect(response).to have_http_status(:see_other)
     end
 
     it "stores the new search" do
       test_env.run_all
       user = User.last
-      post :create,
+      post :create, params: {
         key: "#{test_env.key}",
         token: "#{test_env.token}",
         :lat=>"#{search_data[:lat]}",
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
+      }
       search = Search.last
 
       expect(search.lat).to eq(search_data[:lat])
-      expect(search.lng).to eq(search_data[:long])
-      expect(search.task).to eq(search_data[:zipcode])
+      expect(search.long).to eq(search_data[:long])
+      expect(search.zipcode).to eq(search_data[:zipcode])
       expect(search.user_id).to eq(user.id)
     end
   end

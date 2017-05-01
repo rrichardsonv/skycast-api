@@ -3,7 +3,7 @@ class SearchesController < ApplicationController
   end
 
   def create
-    data = Darksky_Client.forecast(params[:lat], params[:long]).inspect
+    data = Darksky_Client.forecast(params[:lat], params[:long])
     render :json => { status: 201, data: data }
   end
 
