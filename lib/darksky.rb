@@ -4,7 +4,7 @@ require 'json'
 module Darksky
   VERSION = "1.0.5rcrv"
   class API
-    DARKSKY_API_URL = 'https://api.darksky.net/'
+    DARKSKY_API_URL = 'https://api.darksky.net'
     DEFAULT_OPTIONS = {}
     # Create a new instance of the Darksky::API using your API key.
     #

@@ -6,7 +6,12 @@ class User < ApplicationRecord
   has_many :searches
 
   def queries
-    self.searches
+    self.searches.select(:zipcode, :id).distinct.collect do |search|
+      {
+        id: search.id,
+        zipcode: search.zipcode
+      }
+    end
   end
 
   def date_that_token

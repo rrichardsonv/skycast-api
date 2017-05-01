@@ -79,12 +79,17 @@ RSpec.describe SearchesController, type: :controller do
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
       }
-      latRe = Regexp.new("^#{search_data[:lat]}")
-      longRe = Regexp.new("^#{search_data[:long]}")
-      responseBody = JSON.parse(response.body).fetch("data")
+      latRe = Regexp.new("^#{search_data[:lat].sub(/\./,'\.')}")
+      longRe = Regexp.new("^#{search_data[:long].sub(/\./,'\.')}")
 
-      expect(responseBody.fetch('latitude')).to match(latRe) 
-      expect(responseBody.fetch('longitude')).to match(lonRe)
+      responseBody = JSON.parse(response.body).fetch("data")
+      resp_coords = {lat:'latitude', long:'longitude'}
+      resp_coords.each do |key,val|
+        resp_coords[key] = responseBody.fetch(val).to_s
+      end
+
+      expect(resp_coords[:lat]).to match(latRe) 
+      expect(resp_coords[:long]).to match(longRe)
     end
 
     it "returns partial content without a token" do
