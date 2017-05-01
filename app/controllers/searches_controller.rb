@@ -12,7 +12,7 @@ class SearchesController < ApplicationController
   end
 
   def create
-    data = Darksky_Client.forecast(params[:lat], params[:lng])
+    data = Darksky_Client.forecast(params[:lat], params[:long])
     @user = current_user
     search_info = {
       lat: params[:lat],
@@ -20,7 +20,6 @@ class SearchesController < ApplicationController
       zipcode: params[:zipcode]
     }
     if !!data
-    # Note: implement catching for Darksky's shenanigans
       if !!@user
         search = @user.searches.new(search_info)
         if search.save
