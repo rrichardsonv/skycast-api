@@ -10,7 +10,10 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-   @current_user ||= authenticate_token
+    if authenticate_token
+      @current_user ||= User.find_by({auth_token: params[:token]})
+    end
+    @current_user
   end
 
   def render_unauthorized(message)
