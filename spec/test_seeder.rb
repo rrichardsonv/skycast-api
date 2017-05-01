@@ -17,7 +17,7 @@ class TestSeeder
     user = User.new(user_info)
     if user.save
       @user_id = user.id
-      @token = user.token
+      @token = user.auth_token
     else
       raise "Something wrong in seeding users"
     end
@@ -41,7 +41,7 @@ class TestSeeder
   def apikey
     apikey = Apikey.new(domain: "test.com")
     if apikey.save
-      @key = apikey.accesskey
+      @key = apikey.access_key
     else
       raise "something very wrong in apikey seeding"
     end

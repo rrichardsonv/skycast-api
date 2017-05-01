@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
   before_action :verify_access_key
 
   def verify_access_key
-    Apikey.exists?({key: params[:key]})
+    Apikey.exists?({access_key: params[:key]})
   end
 
   def require_login
