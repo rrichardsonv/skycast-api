@@ -12,23 +12,27 @@ class SearchesController < ApplicationController
   end
 
   def create
-    data = Darksky_Client.forecast(params[:lat], params[:long])
+    data = Darksky_Client.forecast(params[:lat], params[:lng])
     @user = current_user
     search_info = {
       lat: params[:lat],
       long: params[:long],
       zipcode: params[:zipcode]
     }
+    if !!data
     # Note: implement catching for Darksky's shenanigans
-    if !!@user
-      search = @user.searches.new(search_info)
-      if search.save
-        render :json => { message: 'Successfully stored search', data: data }, status: :created
+      if !!@user
+        search = @user.searches.new(search_info)
+        if search.save
+          render :json => { message: 'Successfully stored search', data: data }, status: :created
+        else
+          render :json => { message: 'Save of search failed', data: data }, status: :unprocessable_entity
+        end
       else
-        render :json => { message: 'Save of search failed', data: data }, status: :unprocessable_entity
+        render :json => { message: 'Returning search results for anonymous user', data: data}, status: :partial_content
       end
     else
-      render :json => { message: 'Returning search results for anonymous user', data: data}, status: :partial_content
+      render :head => { message: 'No response'}, status: :bad_gateway
     end
   end
 
