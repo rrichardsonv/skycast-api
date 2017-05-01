@@ -1,5 +1,5 @@
 class SearchesController < ApplicationController
-  before_action :require_login, only: :index
+  before_action :require_login, only: :index, raise: false
   
   def index
     @user = current_user
