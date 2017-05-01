@@ -43,7 +43,7 @@ RSpec.describe SearchesController, type: :controller do
       long: '-87.70248169'
     }}
 
-    it "returns http created" do
+    it "returns http created with all params" do
       test_env.run_all
       user = User.last
       post :create, params: {
@@ -87,7 +87,7 @@ RSpec.describe SearchesController, type: :controller do
       expect(responseBody.fetch('longitude')).to match(lonRe)
     end
 
-    it "returns redirect without a token" do
+    it "returns partial content without a token" do
       test_env.run_all
       post :create, params: {
         key: "#{test_env.key}",
@@ -95,7 +95,7 @@ RSpec.describe SearchesController, type: :controller do
         :long => "#{search_data[:long]}",
         :zipcode => "#{search_data[:zipcode]}"
       }
-      expect(response).to have_http_status(:see_other)
+      expect(response).to have_http_status(:partial_content)
     end
 
     it "stores the new search" do

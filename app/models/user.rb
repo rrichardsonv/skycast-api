@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   has_secure_token :auth_token
   after_validation :date_that_token
-  
+
   has_many :searches
 
   def queries
