@@ -5,4 +5,3 @@ class Apikey < ApplicationRecord
     self.access_key = SecureRandom.hex(6)
   end
 end
-# 6b0d09684982
