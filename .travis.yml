@@ -1,7 +1,7 @@
 language: ruby
 before_install:
   - gem install bundler
-rbenv:
+rvm:
   - 2.2.6
 env:
   - DB=postgresql
