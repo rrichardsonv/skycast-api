@@ -6,6 +6,7 @@ scope 'api' do
     resources :searches, only: [:index, :create]
     resources :users, only: :create
     resources :sessions, only: :create
+    delete '/session' => 'sessions#destroy'
   end
 end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

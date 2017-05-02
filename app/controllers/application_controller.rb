@@ -21,7 +21,7 @@ class ApplicationController < ActionController::API
   end
 
   def verify_access_key
-    Apikey.exists?({access_key: params[:key]})
+    Apikey.exists?({access_key: params[:key]}) || render_unauthorized('Unauthorized access')
   end
 
   def require_login

@@ -1,23 +1,20 @@
 class SessionsController < ApplicationController
-  before_action :require_login, only: [:destroy], raise: false
+  before_action :require_login, only: :destroy
 
   def create
-    if verify_access_key
-      user = User.find_by(email: params[:email])
-      if !!user && user.authenticate(params[:password])
-        send_auth_token_for_valid_login_of(user)
-      else
-        render :head => { message: "Error with your login credentials" }, status: :bad_request
-      end
+    user = User.find_by(email: params[:email])
+    if !!user && user.authenticate(params[:password])
+      send_auth_token_for_valid_login_of(user)
     else
-      render :head => { message: "Unauthorized login" }, status: :unauthorized
+      render :head => { message: "Error with your login credentials" }, status: :bad_request
     end
   end
 
-  # def destroy
-  #   logout
-  #   render :head => { message: "Logout successful" }, status: :ok
-  # end
+  def destroy
+    logout
+    render :head => { message: "Logout successful" }, status: :ok
+  end
+  # LOGOUT is handled client-side
 
   private
 
@@ -29,7 +26,7 @@ class SessionsController < ApplicationController
     end
   end
 
-  # def logout
-  #   current_user.invalidate_token
-  # end
+  def logout
+    current_user.invalidate_token
+  end
 end
