@@ -1,0 +1,12 @@
+language: ruby
+before_install:
+  - gem install bundler
+rbenv:
+  - 2.2.6
+env:
+  - DB=postgresql
+script:
+  - bundle exec rake db:test:prepare
+  - bundle exec rake db:migrate
+  - bundle exec rake spec:controllers
+  - bundle exec rake spec:models
