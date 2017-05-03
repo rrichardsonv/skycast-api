@@ -3,13 +3,15 @@ require 'rails_helper'
 RSpec.describe SessionsController, type: :controller do
   let(:test_env){TestSeeder.new}
   let(:user_data){{
-    email: "imanemail@mail.com",
-    password: "password"
+    user: {
+      email: "imanemail@mail.com",
+      password: "password"
+    }
   }}
 
   describe "Sessions#create" do
     before(:each){test_env.run_all}
-    before(:each){User.create!(user_data)}
+    before(:each){User.create!(user_data[:user])}
 
     it "returns http success when accompanied with apikey" do
       keyed_user_data = user_data.clone
@@ -33,14 +35,14 @@ RSpec.describe SessionsController, type: :controller do
     end
 
     it "return bad request when no password match is found" do
-      keyed_user_data = {password: "123123413472354234134724512351346", email: user_data[:email]}
+      keyed_user_data = {user: {password: "123123413472354234134724512351346", email: user_data[:user][:email]}}
       keyed_user_data[:key] = test_env.key
       post :create, params: keyed_user_data
       expect(response).to have_http_status(:bad_request)
     end
 
     it "return bad request when no email match is found" do
-      keyed_user_data = {password: "password", email: "12365124361234762354723458354683456834568"}
+      keyed_user_data = {user: {password: user_data[:user][:password], email: "12365124361234762354723458354683456834568"}}
       keyed_user_data[:key] = test_env.key
       post :create, params: keyed_user_data
       expect(response).to have_http_status(:bad_request)
